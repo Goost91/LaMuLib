@@ -20,6 +20,7 @@ namespace LaMuLib.MSD
 
                 layer.LayerWidth = reader.ReadInt16();
                 layer.LayerHeight = reader.ReadInt16();
+                layer.NumberOfSubLayers = reader.ReadByte();
                 layer.SubLayers = SubLayer.FromReader(reader, layer);
                 layers.Add(layer);
             }

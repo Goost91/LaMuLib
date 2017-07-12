@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using LaMuLib.Util;
 
 namespace LaMuLib.MSD
 {
     public struct AnimatedTile
     {
-        private readonly short _internalValue;
+        private readonly ushort _internalValue;
 
-        public bool unk00 => (_internalValue & 0b1) == 1;
-        public short NumberOfFrames => (short) ((_internalValue >> 1) & 0x7FFF);
+        public bool unk00 => (_internalValue >> 15) == 1;
+        public short NumberOfFrames => (short) ((_internalValue) & 0x7FFF);
         public TileID[] Frames;
 
-        public AnimatedTile(short val)
+        public AnimatedTile(ushort val)
         {
             _internalValue = val;
-            Frames = new TileID[val >> 1 & 0x7FFF];
+            Frames = new TileID[val & 0x7FFF];
         }
         
         public static AnimatedTile[] FromReader(BigEndianBinaryReader reader)
@@ -24,12 +26,17 @@ namespace LaMuLib.MSD
             
             while (!foundEnd)
             {
-                var chunk = reader.ReadInt16();
-
-                if (chunk == 0 && reader.ReadInt16() == 0)
+                var chunk = reader.ReadUInt16();
+                
+                Debug.WriteLine("Found chunk val " + chunk);
+                
+                if (chunk == 0)
                 {
-                    foundEnd = true;
-                    continue;
+                    //reader.ReadInt16();
+                    return tiles.ToArray();
+                    if (reader.ReadInt16() == 0)
+                    {
+                    }
                 }
 
                 var tile = new AnimatedTile(chunk);
