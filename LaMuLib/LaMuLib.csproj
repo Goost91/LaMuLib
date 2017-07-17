@@ -49,9 +49,11 @@
     <Compile Include="MSD\MapMSD.cs" />
     <Compile Include="MSD\SubLayer.cs" />
     <Compile Include="MSD\TileID.cs" />
+      <Compile Include="MSD\TileType.cs"/>
     <Compile Include="MSD\Zone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\BigEndianBinaryReader.cs" />
+      <Compile Include="Util\BigEndianBinaryWriter.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

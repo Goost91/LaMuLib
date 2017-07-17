@@ -7,13 +7,13 @@ namespace LaMuLib.MSD
 {
     public struct AnimatedTile
     {
-        private readonly ushort _internalValue;
+        private readonly short _internalValue;
 
         public bool unk00 => (_internalValue >> 15) == 1;
         public short NumberOfFrames => (short) ((_internalValue) & 0x7FFF);
         public TileID[] Frames;
 
-        public AnimatedTile(ushort val)
+        public AnimatedTile(short val)
         {
             _internalValue = val;
             Frames = new TileID[val & 0x7FFF];
@@ -26,17 +26,11 @@ namespace LaMuLib.MSD
             
             while (!foundEnd)
             {
-                var chunk = reader.ReadUInt16();
-                
-                Debug.WriteLine("Found chunk val " + chunk);
+                var chunk = reader.ReadInt16();
                 
                 if (chunk == 0)
                 {
-                    //reader.ReadInt16();
                     return tiles.ToArray();
-                    if (reader.ReadInt16() == 0)
-                    {
-                    }
                 }
 
                 var tile = new AnimatedTile(chunk);
@@ -50,6 +44,15 @@ namespace LaMuLib.MSD
             }
 
             return tiles.ToArray();
+        }
+
+        public void Write(BigEndianBinaryWriter writer)
+        {
+            writer.Write(_internalValue);
+            foreach (var frame in Frames)
+            {
+                frame.Write(writer);
+            }
         }
     }
 }

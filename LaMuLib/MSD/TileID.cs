@@ -1,4 +1,5 @@
-﻿using LaMuLib.Util;
+﻿using System;
+using LaMuLib.Util;
 
 namespace LaMuLib.MSD
 {
@@ -7,7 +8,7 @@ namespace LaMuLib.MSD
         private readonly short _internalValue;
 
         public short RawTileId => (short) (_internalValue & 0x7FF);
-        public short TileType => (short) (_internalValue >> 11 & 0x3);
+        public TileType TileType => (TileType) (_internalValue >> 11 & 0x3);
         public bool FlippedHorizontally => (_internalValue >> 13 & 0x1) == 1;
         public bool Rotated90Degrees => (_internalValue >> 14 & 0x1) == 1;
         public bool Rotated180Degrees => (_internalValue >> 15 & 0x1) == 1;
@@ -20,6 +21,11 @@ namespace LaMuLib.MSD
         public static TileID FromReader(BigEndianBinaryReader reader)
         {
             return new TileID(reader.ReadInt16());
+        }
+
+        public void Write(BigEndianBinaryWriter writer)
+        {
+            writer.Write(_internalValue);
         }
     }
 }

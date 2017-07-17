@@ -27,5 +27,17 @@ namespace LaMuLib.MSD
             
             return layers.ToArray();
         }
+
+        public void Write(BigEndianBinaryWriter writer)
+        {
+            writer.Write(LayerWidth);
+            writer.Write(LayerHeight);
+            writer.Write((byte) SubLayers.Length);
+
+            foreach (var sublayer in SubLayers)
+            {
+                sublayer.Write(writer);
+            }
+        }
     }
 }

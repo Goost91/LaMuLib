@@ -42,5 +42,27 @@ namespace LaMuLib.MSD
             
             return zones.ToArray();
         }
+
+        public void Write(BigEndianBinaryWriter writer)
+        {
+            writer.Write(UseBossGraphics);
+            writer.Write(NumberOfLayers);
+            writer.Write(NumberOfPrimeLayer);
+            writer.Write(HitMaskWidth);
+            writer.Write(HitMaskHeight);
+
+            for (var x = 0; x < HitMaskWidth; x++)
+            {
+                for (var y = 0; y < HitMaskHeight; y++)
+                {
+                    writer.Write(CollisionMask[x, y]);
+                }
+            }
+
+            foreach (var layer in Layers)
+            {
+                layer.Write(writer);
+            }
+        }
     }
 }

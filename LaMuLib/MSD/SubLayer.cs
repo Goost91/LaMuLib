@@ -28,5 +28,13 @@ namespace LaMuLib.MSD
 
             return sublayers.ToArray();
         }
+
+        public void Write(BigEndianBinaryWriter writer)
+        {
+            foreach (var tile in tiles)
+            {
+                tile.Write(writer);
+            }
+        }
     }
 }
